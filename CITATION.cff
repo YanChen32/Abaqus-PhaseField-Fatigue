@@ -1,0 +1,23 @@
+﻿cff-version: 1.2.0
+message: "If you use this software, please cite the article below."
+title: "PF-Fatigue-GC: gradient-consistent phase-field fatigue in Abaqus (UMAT + UMATHT)"
+version: "1.0.0"
+license: MIT
+authors:
+  - family-names: "Kang"
+    given-names: "Kai"
+  - family-names: "Chen"
+    given-names: "Yan"
+  - family-names: "Liu"
+    given-names: "Yilun"
+preferred-citation:
+  type: article
+  title: "A Gradient-Consistent Abaqus UMAT/UMATHT Framework for Phase-Field Fatigue Fracture"
+  authors:
+    - family-names: "Kang"
+      given-names: "Kai"
+    - family-names: "Chen"
+      given-names: "Yan"
+    - family-names: "Liu"
+      given-names: "Yilun"
+  journal: "International Journal of Fatigue"

@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+
+# Abaqus job files
+*.odb
+*.lck
+*.sta
+*.msg
+*.dat
+*.com
+*.prt
+*.sim
+*.log
+*.res
+*.mdl
+*.stt
+*.abq
+*.pac
+*.sel
+*.023
+*.ipm
+*.obj
+*.dll
+*.exp
+*.lib
+
+# outputs of the identification scripts
+postprocessing/identification/sn_identify_result.json
+postprocessing/identification/sn_model_curves.csv
+postprocessing/identification/paris_identify_*.json
