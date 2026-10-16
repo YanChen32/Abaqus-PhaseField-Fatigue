@@ -29,6 +29,10 @@ div(*f* ∇φ) + 2(1−φ)*H*/(*G*c *l*₀) − *f*φ/*l*₀² = 0. UMATHT retur
 element assembly contains the term (∇ ln *f*)·∇φ without a user element. The local-equivalent (LE) form
 replaces this by a locally scaled toughness and is included for comparison.
 
+![Data flow between Abaqus/Standard, UMAT and UMATHT](images/workflow.png)
+
+*Data flow in one increment: UMAT updates the stress, the history field and f; UMATHT returns the flux −f∇φ; the stress of the next increment uses the phase field of the previous one (staggered update).*
+
 ## 2. Contents
 
 | Folder | Content |
