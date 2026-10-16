@@ -1,8 +1,9 @@
 ﻿cff-version: 1.2.0
 message: "If you use this software, please cite the article below."
-title: "PF-Fatigue-GC: gradient-consistent phase-field fatigue in Abaqus (UMAT + UMATHT)"
+title: "Abaqus-PhaseField-Fatigue (PF-Fatigue-GC): gradient-consistent phase-field fatigue in Abaqus (UMAT + UMATHT)"
 version: "1.0.0"
 license: MIT
+repository-code: "https://github.com/YanChen32/Abaqus-PhaseField-Fatigue"
 authors:
   - family-names: "Kang"
     given-names: "Kai"

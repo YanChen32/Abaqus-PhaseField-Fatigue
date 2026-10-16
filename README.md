@@ -1,6 +1,7 @@
-# PF-Fatigue-GC
+# Abaqus-PhaseField-Fatigue
 
-Gradient-consistent phase-field fatigue fracture in Abaqus/Standard with a UMAT + UMATHT pair.
+Gradient-consistent phase-field fatigue fracture in Abaqus/Standard with a UMAT + UMATHT pair (package name
+PF-Fatigue-GC).
 
 The package belongs to the article *A Gradient-Consistent Abaqus UMAT/UMATHT Framework for Phase-Field
 Fatigue Fracture* (K. Kang, Y. Chen, Y. Liu; International Journal of Fatigue, submitted). It contains the
