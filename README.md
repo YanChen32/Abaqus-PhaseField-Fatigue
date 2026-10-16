@@ -7,9 +7,17 @@ Fatigue Fracture* (K. Kang, Y. Chen, Y. Liu; International Journal of Fatigue, s
 user subroutines of the article, the input files of the two SENT examples, scripts for post-processing and
 parameter identification, and the Abaqus/CAE plug-in PF-Fatigue v1.0.
 
-The full description is `PF-Fatigue-GC_Documentation.pdf`: implementation,
-model set-up in Abaqus/CAE, a verified example, parameter identification and theory. This README is a
-summary.
+The full description is in the folder `manual/`: `PF-Fatigue-GC_Documentation.pdf` (implementation, model
+set-up in Abaqus/CAE, a verified example, parameter identification and theory) and
+`PF-Fatigue_v1.0_User_Guide.pdf` (step-by-step guide to the plug-in). This README is a summary.
+
+![PF-Fatigue plug-in in Abaqus/CAE](images/plugin.png)
+
+*The PF-Fatigue plug-in in Abaqus/CAE: menu entry (left) and Model tab of the dialog (right).*
+
+![Phase field of a seam-crack example built with the plug-in](images/plugin_result.png)
+
+*Phase field φ (NT11) of a seam-crack example built with the plug-in, at three cycle numbers.*
 
 ## 1. Principle
 
@@ -28,8 +36,9 @@ replaces this by a locally scaled toughness and is included for comparison.
 | `examples/` | input files of the Mode-I and shear-loaded SENT examples |
 | `postprocessing/abaqus_python/` | ODB extraction scripts (run with `abaqus python`) |
 | `postprocessing/identification/` | S–N and Paris parameter identification (Python 3, numpy, scipy) and the experimental data of the article |
-| `plugin/` | Abaqus/CAE plug-in PF-Fatigue v1.0 and its User Guide (`PF-Fatigue_v1.0_User_Guide.pdf`) |
-| `PF-Fatigue-GC_Documentation.pdf` | documentation |
+| `plugin/` | Abaqus/CAE plug-in PF-Fatigue v1.0 |
+| `manual/` | documentation (`PF-Fatigue-GC_Documentation.pdf`) and plug-in User Guide (`PF-Fatigue_v1.0_User_Guide.pdf`) |
+| `images/` | figures of this README |
 | `LICENSE`, `CITATION.cff` | licence, citation |
 
 ## 3. User subroutines
@@ -137,7 +146,7 @@ taken from the publications cited in the article.
 
 `plugin/PF_Fatigue` is an Abaqus/CAE 2023 plug-in that sets up the material, the step, the amplitude, the
 output, an optional initial crack and the job for either fatigue law. Installation and use are described
-in `plugin/PF-Fatigue_v1.0_User_Guide.pdf`.
+in `manual/PF-Fatigue_v1.0_User_Guide.pdf`.
 
 ## 8. Verification
 
