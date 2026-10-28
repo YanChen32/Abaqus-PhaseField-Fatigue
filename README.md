@@ -38,7 +38,7 @@ replaces this by a locally scaled toughness and is included for comparison.
 | Folder | Content |
 |---|---|
 | `src/` | Fortran user subroutines (UMAT and UMATHT in one file each) |
-| `examples/` | input files of the Mode-I and shear-loaded SENT examples |
+| `examples/` | input files of the SENT examples under Mode-I and Mode-II loading |
 | `postprocessing/abaqus_python/` | ODB extraction scripts (run with `abaqus python`) |
 | `postprocessing/identification/` | S–N and Paris parameter identification (Python 3, numpy, scipy) and the experimental data of the article |
 | `plugin/` | Abaqus/CAE plug-in PF-Fatigue v1.0 |
@@ -65,7 +65,7 @@ replaces this by a locally scaled toughness and is included for comparison.
 | 5 | α_T (fatigue threshold) | η_T (dimensionless threshold) |
 | 6 | *k*res (residual stiffness) | ISPLIT |
 | 7 | ISPLIT | *p* (exponent) |
-| 8 | – | *R* (load ratio) |
+| 8 | – | *R* (stress ratio) |
 | 9 | – | κ (mean-stress parameter) |
 
 ISPLIT selects the energy split of the crack driving force: 0 none, 1 Amor (volumetric–deviatoric),
@@ -77,10 +77,12 @@ also needed. The two kinds of files use different constants and state variables.
 
 | SDV | Cycle by cycle | Cycle domain |
 |---|---|---|
-| 1 | accumulated fatigue variable ᾱ | accumulated history Ā |
+| 1 | accumulated fatigue variable ᾱ | accumulated history Ȳ |
 | 2 | history field *H* | history field *H* |
-| 3 | α of the previous increment | equivalent driving force *A*eq |
+| 3 | α of the previous increment | equivalent driving force *Y*eq |
 | 4 | degradation *f* | degradation *f* |
+
+In the source code and the plug-in, the history Ȳ, the driving force *Y*eq, the peak energy *Y*max and the factor β = (1−R)/2 of the article are named Abar, Aeq, Amax and S; the code names were kept.
 
 ### Analysis settings
 
@@ -119,7 +121,7 @@ settings such as the initial crack-tip position are at the top of each script.
 
 * Mesh: element size h ≤ *l*₀/2 along the crack path.
 * Cycle by cycle: the result depends on IPC; compare formulations at the same IPC.
-* Cycle domain: the resolution is set by the scaled increment ΔN* = ΔN·S^(2κp)/η_T with S = (1−R)/2, not
+* Cycle domain: the resolution is set by the scaled increment ΔN* = ΔN·β^(2κp)/η_T with β = (1−R)/2 (Eq. (29) of the article), not
   by ΔN. A fixed ΔN gives a different resolution at each *R*. The crack-growth calculations of the
   article use ΔN* = 0.625. The plug-in reports ΔN* and warns above 1.
 * Initial transient: growth rates in the first ≈20 *l*₀ from a sharp notch are not in the Paris regime
@@ -129,7 +131,7 @@ settings such as the initial crack-tip position are at the top of each script.
 
 `postprocessing/identification/` contains
 
-* `sn_identify.py`: homogeneous S–N life F_p(r) and identification of *p*, η_T and κ from the curves at
+* `sn_identify.py`: homogeneous S–N life F_p(ρ), ρ = σmax/σc, and identification of *p*, η_T and κ from the curves at
   R = −1 and 0. With `sn_experimental_data.csv` it reproduces the parameters of the article (Table 2).
 * `paris_identify.py`: identification from reference crack-growth calculations of a CT specimen
   (η_T = 1, R = −1, trial values of *p*) and the measured curves at two stress ratios. The reference

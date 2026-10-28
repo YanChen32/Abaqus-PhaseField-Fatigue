@@ -1,17 +1,17 @@
-"""Fatigue parameters p, kappa and eta_T of the cycle-domain law from crack-growth data (Section 4.2.2).
+"""Fatigue parameters p, kappa and eta_T of the cycle-domain law from crack-growth data (Section 5.3 of the article).
 
-The growth rate at (eta_T, kappa, R) is eta_T^-1 S^(2 kappa p) Phi_p(K_max), S = (1 - R)/2, where Phi_p is the rate of
+The growth rate at (eta_T, kappa, R) is eta_T^-1 beta^(2 kappa p) Phi_p(K_max), beta = (1 - R)/2, where Phi_p is the rate of
 the reference problem (eta_T = 1, R = -1) under the same peak load. Phi_p is obtained from compact-tension (CT)
 reference calculations for a few trial values of p; these calculations are not part of this package.
 
 Procedure (Supporting Information, Section 4):
 * Paris interval of every measured curve: the longest run of consecutive points with R^2 >= 0.995 and a root-mean-square
   deviation <= 0.035 in log10(da/dN) of the log-log fit, with at least 8 points and at least 40% of the points;
-* experimental exponent m: joint fit log10 v = A + m log10 dK + q log10 S over the two calibration curves (R = 0.1, 0.3);
+* experimental exponent m_P: joint fit log10 v = A + m_P log10 dK + w log10 beta over the two calibration curves (R = 0.1, 0.3);
 * reference rate: secant rate between successive output frames at the mean crack length of the two frames, after the
   first 20 l0 of crack extension; K_max from the ASTM E647 CT function; two load levels are joined at the
   geometric mean of their overlapping K_max range;
-* step 1: p such that the Paris exponent of Phi_p over the K_max range of the calibration data equals m
+* step 1: p such that the Paris exponent of Phi_p over the K_max range of the calibration data equals m_P
   (linear interpolation between the bracketing reference calculations, no extrapolation);
 * step 2: mean offsets Lambda_j = mean(ln v - ln Phi_p(K_max)) of the two calibration curves give kappa and eta_T.
 

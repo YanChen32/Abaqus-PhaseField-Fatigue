@@ -326,7 +326,7 @@ def preflight(modelName, baseMaterial, pfMaterialName, E, nu, Gc, ell, split, mo
         errors.extend(U.validate_envelope_inputs(maxValue, loadRatio, cycles, deltaN, etaT, pExp, kappa))
         if not errors:
             dns = U.scaled_increment(deltaN, loadRatio, etaT, pExp, kappa)
-            notes.append('Scaled cycle increment dN* = dN S^(2 kappa p)/eta_T = %.4g.' % dns)
+            notes.append('Scaled cycle increment dN* = dN beta^(2 kappa p)/eta_T = %.4g.' % dns)
             if dns > U.DN_STAR_WARN:
                 warns.append('dN* = %.3g exceeds %.1f; the paper uses dN* = 0.625. Check the result with a '
                              'smaller dN.' % (dns, U.DN_STAR_WARN))

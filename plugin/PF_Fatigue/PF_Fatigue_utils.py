@@ -202,7 +202,7 @@ def validate_envelope_inputs(max_value, load_ratio, cycles, delta_n, eta_t, p, k
 
 
 def scaled_increment(delta_n, load_ratio, eta_t, p, kappa):
-    """Scaled cycle increment dN* = dN S^(2 kappa p) / eta_T, S = (1-R)/2 (paper Eq. (30))."""
+    """Scaled cycle increment dN* = dN beta^(2 kappa p) / eta_T, beta = (1-R)/2 (paper Eq. (29))."""
     s = (1.0 - float(load_ratio)) / 2.0
     return float(delta_n) * s ** (2.0 * float(kappa) * float(p)) / float(eta_t)
 

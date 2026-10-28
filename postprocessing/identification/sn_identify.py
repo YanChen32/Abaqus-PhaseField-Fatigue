@@ -1,16 +1,16 @@
-"""Fatigue parameters p, eta_T and kappa of the cycle-domain law from stress-life data (Section 4.2.1).
+"""Fatigue parameters p, eta_T and kappa of the cycle-domain law from stress-life data (Section 5.2 of the article).
 
 Under homogeneous uniaxial stress the life of the model is
 
-    N_f = eta_T * S^(-2 kappa p) * F_p(r),   S = (1 - R)/2,   r = sigma_max / sigma_c,
-    F_p(r) = (6c)^(-p) [ (1 - phi0)^(2p) + c^(-1/2) * int_phi0^phi_f (1 - 4 phi) phi^(-1/2) (1 - phi)^(2p + 1/2) dphi ],
+    N_f = eta_T * beta^(-2 kappa p) * F_p(rho),   beta = (1 - R)/2,   rho = sigma_max / sigma_c,
+    F_p(rho) = (6c)^(-p) [ (1 - phi0)^(2p) + c^(-1/2) * int_phi0^phi_cr (1 - 4 phi) phi^(-1/2) (1 - phi)^(2p + 1/2) dphi ],
 
-with c = (27/256) r^2, phi0 the smaller root of phi (1 - phi)^3 = c and phi_f = 0.24 (Supporting Information,
-Section 2). The integral is evaluated by 128-point Gauss-Legendre quadrature.
+with c = (27/256) rho^2, phi0 the smaller root of phi (1 - phi)^3 = c and phi_cr = 0.24 (Supporting Information,
+Section 2). The integral is evaluated by 128-point Gauss-Legendre quadrature. In the code, S(R) is beta and r is rho.
 
-Step 1: p is chosen so that the slope of ln F_p(r) against ln r at the stress levels of the R = 0 tests equals the
-        slope of ln N_f against ln r of the tests.
-Step 2: the mean offsets Lambda_R = mean(ln N_f - ln F_p(r)) of the curves at R = -1 and R = 0 give
+Step 1: p is chosen so that the slope of ln F_p(rho) against ln rho at the stress levels of the R = 0 tests equals the
+        slope of ln N_f against ln rho of the tests.
+Step 2: the mean offsets Lambda_R = mean(ln N_f - ln F_p(rho)) of the curves at R = -1 and R = 0 give
         eta_T = exp(Lambda_-1) and kappa = (Lambda_0 - Lambda_-1) / (2 p ln 2).
 
 Input : sn_experimental_data.csv (alloy, R, sigma_a_MPa, N_f_cycles)
