@@ -206,9 +206,12 @@ def main(argv):
                 print("    %-7s %-11s within +-30%%: %d of %d" % (key, d["role"], d["within_30_percent"], d["n"]))
         else:
             print(res["status"])
+            return 1
     else:
         print(__doc__)
+        return 2
+    return 0
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    sys.exit(main(sys.argv[1:]))

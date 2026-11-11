@@ -13,12 +13,14 @@ authors:
     given-names: "Yilun"
 preferred-citation:
   type: article
-  title: "A Gradient-Consistent Abaqus UMAT/UMATHT Framework for Phase-Field Fatigue Fracture"
+  title: "Gradient-Consistent Phase-Field Modeling of Fatigue Fracture: Implementation and Calibration"
   authors:
     - family-names: "Kang"
       given-names: "Kai"
     - family-names: "Chen"
       given-names: "Yan"
+    - family-names: "Ying"
+      given-names: "Penghua"
     - family-names: "Liu"
       given-names: "Yilun"
   journal: "International Journal of Fatigue"

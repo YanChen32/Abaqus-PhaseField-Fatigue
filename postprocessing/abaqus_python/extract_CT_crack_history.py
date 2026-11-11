@@ -6,7 +6,8 @@ For every ODB in the working directory (optionally filtered by ODB_NAME_FILTER) 
 1. reads NT11 on the crack line (symmetry line y = CRACK_LINE_Y);
 2. takes the crack tip as the crossing NT11 = 0.95, kept monotonic in time;
 3. writes <job>_crack_history.csv with the columns frame, N, x_tip_raw_mm, x_tip_monotonic_mm, delta_a_mm, ...;
-4. writes CT_crack_history_summary.csv with the mean growth rate between 5 l0 and 15 l0 of crack extension.
+4. writes CT_crack_history_summary.csv with an early-window diagnostic rate between 5 l0 and 15 l0.
+   This diagnostic is not a Paris-regime rate; paris_identify.py excludes the first 20 l0.
 
 In the cycle-domain subroutine the step time is the cycle number, so frame.frameValue is used as N.
 The crack-history files are the input of postprocessing/identification/paris_identify.py.
@@ -436,7 +437,7 @@ def process_odb(odb_path):
                 else:
                     row[3] = initial_tip - xt
 
-        # Stable-window targets
+        # Early-window diagnostic targets; not used for Paris identification
         da1 = A1_FACTOR * L0
         da2 = A2_FACTOR * L0
 
@@ -444,9 +445,9 @@ def process_odb(odb_path):
         N2 = interpolate_cycle_at_extension(rows, da2)
 
         if (not math.isnan(N1)) and (not math.isnan(N2)) and N2 > N1:
-            v_stable = (da2 - da1) / (N2 - N1)
+            v_window = (da2 - da1) / (N2 - N1)
         else:
-            v_stable = float('nan')
+            v_window = float('nan')
 
         # Final valid state
         final_row = None
@@ -497,7 +498,7 @@ def process_odb(odb_path):
         print('Final delta_a   : %.6g mm' % final_da)
         print('N(5*l0)         : %s' % fmt(N1))
         print('N(15*l0)        : %s' % fmt(N2))
-        print('v[5l0->15l0]    : %s mm/cycle' % fmt(v_stable))
+        print('v[5l0->15l0]    : %s mm/cycle' % fmt(v_window))
         print('CSV written     : %s' % out_csv)
 
         return {
@@ -511,7 +512,7 @@ def process_odb(odb_path):
             'final_da': final_da,
             'N_5l0': N1,
             'N_15l0': N2,
-            'v_5l0_15l0': v_stable,
+            'v_5l0_15l0': v_window,
             'v_overall': v_overall,
             'history_csv': out_csv
         }
@@ -564,11 +565,12 @@ def main():
     print('Field          : %s' % FIELD_NAME)
     print('Threshold      : %.4f' % PHI_THRESHOLD)
     print('l0             : %.6g mm' % L0)
-    print('Stable window  : %.3g*l0 -> %.3g*l0'
+    print('Diagnostic window: %.3g*l0 -> %.3g*l0'
           % (A1_FACTOR, A2_FACTOR))
     print('============================================================')
 
     summaries = []
+    failed = []
 
     for name in odb_files:
         path = os.path.join(ODB_DIR, name)
@@ -583,6 +585,7 @@ def main():
             traceback.print_exc()
             print('------------------------')
             print('This ODB was skipped.')
+            failed.append(name)
 
     # Summary CSV
     summary_path = os.path.join(ODB_DIR, 'CT_crack_history_summary.csv')
@@ -618,8 +621,12 @@ def main():
 
     print('')
     print('============================================================')
-    print('Finished.')
     print('Summary: %s' % summary_path)
+    if failed or not summaries:
+        print('Extraction incomplete: %d of %d ODBs failed.' %
+              (len(failed), len(odb_files)))
+        raise SystemExit(1)
+    print('Finished.')
     print('============================================================')
 
 

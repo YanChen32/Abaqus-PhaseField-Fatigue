@@ -12,9 +12,9 @@ VERSION = '1.0'
 # Bundled user subroutines (identical to the files released with the paper).
 SUBROUTINES = {
     'cycle': ('PF_Fatigue_Exact_EnergySplit.f',
-              '224267f1c4e5cb272e114c19cbb103b821276539bd63f26546d38dd0acb2ff15'),
+              '53657d3ed48111ae4bb70d66a345d84a6435791ae6e47c9d3d83077c61b90490'),
     'envelope': ('PF_Fatigue_GC_Envelope_Final.f',
-                 '6032aa447c9cedce3ab6c2d36a75948c5c3ac3944135fd68753ae46d0840cd65'),
+                 '879387a9d678644d17daf25980816db5bf16a29a8f18bc5ba0f9a0dd4e443359'),
 }
 
 SPLITS = (('None', 0), ('Amor', 1), ('Miehe', 2), ('No-tension', 3))

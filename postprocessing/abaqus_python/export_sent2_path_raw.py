@@ -312,10 +312,11 @@ def main():
     print('Output directory: ' + OUT_DIR)
     print('=' * 72)
 
-    gc_odb, gc_step, gc_inst = open_model(GC_ODB)
-    le_odb, le_step, le_inst = open_model(LE_ODB)
-
+    gc_odb = None
+    le_odb = None
     try:
+        gc_odb, gc_step, gc_inst = open_model(GC_ODB)
+        le_odb, le_step, le_inst = open_model(LE_ODB)
         print('GC nodes/elements: %d %d' % (len(gc_inst.nodes), len(gc_inst.elements)))
         print('LE nodes/elements: %d %d' % (len(le_inst.nodes), len(le_inst.elements)))
 
@@ -361,8 +362,10 @@ def main():
         write_manifest(manifest, OUT_DIR)
 
     finally:
-        gc_odb.close()
-        le_odb.close()
+        if gc_odb is not None:
+            gc_odb.close()
+        if le_odb is not None:
+            le_odb.close()
 
     print('=' * 72)
     print('Done. Files in ' + OUT_DIR)

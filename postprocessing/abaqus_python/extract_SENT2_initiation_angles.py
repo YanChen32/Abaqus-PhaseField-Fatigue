@@ -477,9 +477,7 @@ def process_case(model, ipc, odb_name):
                 mean_angle - MTS_MODE_II_ANGLE_DEG
             )
         else:
-            result['initiation_angle_mean_deg'] = ''
-            result['initiation_angle_std_deg'] = ''
-            result['deviation_from_MTS_deg'] = ''
+            raise RuntimeError('No initiation angle could be fitted at any threshold.')
 
         return result
 
@@ -581,6 +579,7 @@ def main():
     print('=' * 72)
 
     rows = []
+    failed = []
 
     for model, ipc, odb_name in ODB_CASES:
         try:
@@ -590,12 +589,17 @@ def main():
             print('')
             print('ERROR processing:', odb_name)
             print(str(exc))
+            failed.append(odb_name)
 
     if rows:
         write_summary(rows)
 
     print('')
     print('=' * 72)
+    if failed or not rows:
+        print('Extraction incomplete: %d of %d cases failed.' %
+              (len(failed), len(ODB_CASES)))
+        raise SystemExit(1)
     print('Done. Files in ' + OUT_DIR)
     print('=' * 72)
 

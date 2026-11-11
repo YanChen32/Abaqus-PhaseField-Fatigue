@@ -7,9 +7,9 @@ C Temperature DOF is the phase field phi.
 C Mechanical response is explicitly staggered: UMAT uses TEMP (phi_n).
 C The phase-field equation is the gradient-consistent (GC) form:
 C
-C   div[f grad(phi)] + 2(1-phi)H/(Gc*l) - f*phi/l^2 = 0
+C   div[f*Gc*l grad(phi)] + 2(1-phi)H - f*Gc*phi/l = 0
 C
-C UMATHT defines q = -f grad(phi), so grad(f).grad(phi) is retained by
+C UMATHT defines q = -f*Gc*l grad(phi), so grad(f).grad(phi) is retained by
 C the finite-element weak form without explicitly calculating grad(f).
 C
 C Cycle-domain fatigue law:
@@ -55,7 +55,7 @@ C State variables:
 C   SDV1 = Abar, dimensionless accumulated fatigue history
 C   SDV2 = H, mechanical history field
 C   SDV3 = Aeq, current dimensionless equivalent fatigue driver
-C   SDV4 = f(Abar), Carrara-type asymptotic degradation
+C   SDV4 = k = f*Gc*l, phase-field conductivity
 C
 C Elasticity, energy split, history field, stress update, phase-field
 C source and UMATHT are the same as in PF_Fatigue_Exact_EnergySplit.f;
@@ -196,14 +196,14 @@ C----- GC phase-field local source; diffusion is in UMATHT ------------
       IF (PHIN .LT. 0.0D0) THEN
 C       Clipped branch: phi=max(TEMP+DTEMP,0) is locally constant.
         PHIN=0.0D0
-        RPL=2.0D0*(1.0D0-PHIN)*HNEW/(GC*ELL)
-     1      -FNEW*PHIN/(ELL*ELL)
+        RPL=2.0D0*(1.0D0-PHIN)*HNEW
+     1      -FNEW*GC*PHIN/ELL
         DRPLDT=0.0D0
       ELSE
 C       At PHIN=0 use the right derivative of the admissible phi>=0 branch.
-        RPL=2.0D0*(1.0D0-PHIN)*HNEW/(GC*ELL)
-     1      -FNEW*PHIN/(ELL*ELL)
-        DRPLDT=-2.0D0*HNEW/(GC*ELL)-FNEW/(ELL*ELL)
+        RPL=2.0D0*(1.0D0-PHIN)*HNEW
+     1      -FNEW*GC*PHIN/ELL
+        DRPLDT=-2.0D0*HNEW-FNEW*GC/ELL
       END IF
 C
 C     Mechanical field is intentionally lagged with respect to phi.
@@ -216,7 +216,7 @@ C----- State variables -------------------------------------------------
       STATEV(1)=ABARNEW
       STATEV(2)=HNEW
       STATEV(3)=AEQ
-      STATEV(4)=FNEW
+      STATEV(4)=FNEW*GC*ELL
 C
       SSE=GPHI*PSI0
       SPD=0.0D0
@@ -226,7 +226,7 @@ C
       END
 C
 C=======================================================================
-C UMATHT: gradient-consistent phase-field flux q = -f grad(phi)
+C UMATHT: gradient-consistent phase-field flux q = -f*Gc*l grad(phi)
 C=======================================================================
       SUBROUTINE UMATHT(U,DUDT,DUDG,FLUX,DFDT,DFDG,
      1 STATEV,TEMP,DTEMP,DTEMDX,TIME,DTIME,PREDEF,DPRED,
@@ -253,15 +253,18 @@ C
         END DO
       END DO
 C
-      FCOND=1.0D0
-      IF (NSTATV .GE. 4) THEN
-C       STATEV(4)=0 denotes the uninitialized/default state.
-C       Once f is active, retain its lower bound instead of reverting to 1
-C       when f is exactly 1.0D-12.
-        IF (STATEV(4) .GT. 0.0D0) THEN
-          FCOND=MAX(STATEV(4),1.0D-12)
-        END IF
+C     In coupled analysis UMAT updates STATEV before UMATHT is called.
+C     UMAT applies the dimensionless f floor before storing k=f*Gc*l.
+C     Do not impose an additional absolute lower bound on k.
+      IF (NSTATV .LT. 4) THEN
+        WRITE(*,*) '*** PF GC: UMATHT requires at least 4 SDVs.'
+        CALL XIT
       END IF
+      IF (.NOT. (STATEV(4) .GT. 0.0D0)) THEN
+        WRITE(*,*) '*** PF GC: conductivity not initialized by UMAT.'
+        CALL XIT
+      END IF
+      FCOND=STATEV(4)
 C
       DO I=1,NTGRD
         FLUX(I)=-FCOND*DTEMDX(I)
