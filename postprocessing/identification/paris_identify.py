@@ -1,4 +1,4 @@
-"""Fatigue parameters p, kappa and eta_T of the cycle-domain law from crack-growth data (Section 5.3 of the article).
+"""Fatigue parameters p, kappa and eta_T of the cycle-domain law from crack-growth data (Section 5.2 of the article).
 
 The growth rate at (eta_T, kappa, R) is eta_T^-1 beta^(2 kappa p) Phi_p(K_max), beta = (1 - R)/2, where Phi_p is the rate of
 the reference problem (eta_T = 1, R = -1) under the same peak load. Phi_p is obtained from compact-tension (CT)
@@ -14,6 +14,7 @@ Procedure (Supporting Information, Section 4):
 * step 1: p such that the Paris exponent of Phi_p over the K_max range of the calibration data equals m_P
   (linear interpolation between the bracketing reference calculations, no extrapolation);
 * step 2: mean offsets Lambda_j = mean(ln v - ln Phi_p(K_max)) of the two calibration curves give kappa and eta_T.
+  The script's Lambda_j equals -Lambda_R in Eq. (35) of the article.
 
 Input
   paris_experimental_data.csv          material, R, deltaK_MPa_sqrt_m, da_dN_mm_per_cycle

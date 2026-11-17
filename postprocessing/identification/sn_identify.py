@@ -1,4 +1,4 @@
-"""Fatigue parameters p, eta_T and kappa of the cycle-domain law from stress-life data (Section 5.2 of the article).
+"""Fatigue parameters p, eta_T and kappa of the cycle-domain law from stress-life data (Section 5.1 of the article).
 
 Under homogeneous uniaxial stress the life of the model is
 

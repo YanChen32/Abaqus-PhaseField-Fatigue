@@ -13,7 +13,8 @@ authors:
     given-names: "Yilun"
 preferred-citation:
   type: article
-  title: "Gradient-Consistent Phase-Field Modeling of Fatigue Fracture: Implementation and Calibration"
+  status: submitted
+  title: "Phase-field fatigue modeling: Gradient consistency and scaling-based calibration"
   authors:
     - family-names: "Kang"
       given-names: "Kai"
@@ -21,6 +22,8 @@ preferred-citation:
       given-names: "Yan"
     - family-names: "Ying"
       given-names: "Penghua"
+    - family-names: "Huang"
+      given-names: "Jing"
     - family-names: "Liu"
       given-names: "Yilun"
   journal: "International Journal of Fatigue"
